@@ -1,1 +1,3 @@
-# deep_learning_soundfield_synthesis_irregular_array
+# Deep Learning-based Soundfield Synthesis using Irregular Loudspeaker arrays  
+
+Project organization 
