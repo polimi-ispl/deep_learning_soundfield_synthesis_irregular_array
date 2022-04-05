@@ -1,6 +1,10 @@
 
 # Irregular Linear Array Results
 
+## Setupp
+![real soundfield](images/linear/setup.png)
+
+## Ground truth
 ![real soundfield](images/linear/gt.png)
 
 ## 48 loudspeaker setup
