@@ -1,7 +1,14 @@
-##Code repository for the paper _Compensation of Driving Signals for Soundfield Synthesis through Irregular Loudspeaker Arrays Based on Convolutional Neural Networkss_
+#Compensation of Driving Signals for Soundfield Synthesis through Irregular Loudspeaker Arrays Based on Convolutional Neural Network
+
+Code repository for the paper _Compensation of Driving Signals for Soundfield Synthesis through Irregular Loudspeaker Arrays Based on Convolutional Neural Networks_
 [[1]](#references).
 
-### Project organization
+- [Dependencies](#dependencies)
+- [Dependencies](#data-generation)
+- [Dependencies](#network-training)
+- [Dependencies](#results-computation)
+
+### Dependencies
 
 ### Data generation
 
