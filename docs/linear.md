@@ -1,7 +1,9 @@
 
 # Irregular Linear Array Results
 
-## Setupp
+[Home](/README.md) 
+
+## Setup
 ![real soundfield](images/linear/setup.png)
 
 ## Ground truth
