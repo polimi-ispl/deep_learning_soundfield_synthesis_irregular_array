@@ -12,3 +12,4 @@ Use:
 ## 32 loudspeaker setup
 
 ## 16 loudspeaker setup
+![real soundfield](/plots/circular_pages/16_mic.png)
