@@ -1,6 +1,6 @@
 
 # Irregular Circular Array Results
-[Home](/README.md) 
+[Home](/deep_learning_soundfield_synthesis_irregular_array/README.md) 
 # Training/test setup
 ![real soundfield](images/circular/setup.png)
 
