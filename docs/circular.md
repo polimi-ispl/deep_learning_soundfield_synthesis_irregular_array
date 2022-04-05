@@ -1,5 +1,5 @@
 
-# Circular Array Results
+# Irregular Circular Array Results
 
 ## 48 loudspeaker setup
 ![real soundfield](/plots/circular_pages/16_ldspks.png)
