@@ -10,5 +10,6 @@ Use:
 ## 48 loudspeaker setup
 
 ## 32 loudspeaker setup
-![real soundfield](/plots/circular/sf_real_source_32_f_1007.8125.png)
+
 ## 16 loudspeaker setup
+![real soundfield](/plots/circular_pages/16_mic.png)
