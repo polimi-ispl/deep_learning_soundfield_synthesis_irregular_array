@@ -1,7 +1,7 @@
 
 # Irregular Linear Array Results
 
-[Home](/README.md) 
+[Home](../README.md) 
 
 ## Setup
 ![real soundfield](images/linear/setup.png)
