@@ -1,7 +1,7 @@
 
 # Irregular Linear Array Results
 
-[Home](/deep_learning_soundfield_synthesis_irregular_array/README.md) 
+[Home](/deep_learning_soundfield_synthesis_irregular_array/index.html) 
 
 ## Setup
 ![real soundfield](images/linear/setup.png)
