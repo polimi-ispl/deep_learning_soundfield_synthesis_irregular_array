@@ -1,6 +1,10 @@
 
 # Irregular Circular Array Results
 
+# Training/test setup
+![real soundfield](images/circular/setup.png)
+
+## Ground truth
 ![real soundfield](images/circular/gt.png)
 
 ## 48 loudspeaker setup
