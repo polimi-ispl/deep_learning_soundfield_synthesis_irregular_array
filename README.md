@@ -6,6 +6,9 @@ We propose a technique for soundfield synthesis using irregular loudspeaker arra
 # Method
 ![real soundfield](/plots/circular_pages/method_train.png)
 
+# Results
+
+[Irregular Circular Array](/docs/circular.md) [Irregular Circular Array](/docs/linear.md)
 
 # Circular Array Results
 
@@ -15,3 +18,8 @@ We propose a technique for soundfield synthesis using irregular loudspeaker arra
 
 ## 16 loudspeaker setup
 ![real soundfield](/plots/circular_pages/16_ldspks.png)
+
+
+### Support or Contact
+For any information regarding the paper or the code send us an email at <luca.comanducci@polimi.it>!
+
