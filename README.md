@@ -4,9 +4,9 @@ Code repository for the paper _Compensation of Driving Signals for Soundfield Sy
 [[1]](#references).
 
 - [Dependencies](#dependencies)
-- [Dependencies](#data-generation)
-- [Dependencies](#network-training)
-- [Dependencies](#results-computation)
+- [Data Generation](#data-generation)
+- [Network Training](#network-training)
+- [Results Computation](#results-computation)
 
 ### Dependencies
 
