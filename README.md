@@ -1,5 +1,9 @@
-# Deep Learning-based Soundfield Synthesis using Irregular Loudspeaker arrays  
+# Compensation of Driving Signals for Soundfield Synthesis through Irregular Loudspeaker Arrays Based on Convolutional Neural Networks
 
-Project organization 
+### Project organization
 
-Use:
+### Data generation
+
+### Network training
+
+### Results computation
