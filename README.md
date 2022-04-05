@@ -8,7 +8,9 @@ We propose a technique for soundfield synthesis using irregular loudspeaker arra
 
 # Results
 
-[Irregular Circular Array](/docs/circular.md) [Irregular Circular Array](/docs/linear.md)
+[Irregular Circular Array](/docs/circular.md) 
+
+[Irregular Linear Array](/docs/linear.md)
 
 # Circular Array Results
 
