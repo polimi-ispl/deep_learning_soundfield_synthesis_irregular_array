@@ -44,7 +44,11 @@ def plot_soundfield(cmap, P, n_f, selection, axis_label_size, tick_font_size, sa
         im = sfs.plot2d.amplitude(np.reshape(P[:, n_f], (params.N_sample, params.N_sample)),
                                   params.grid,  cmap=cmap, colorbar=False, vmin=P[:, n_f].min(), vmax=P[:, n_f].max(), xnorm=None)
     if plot_ldspks:
-        sfs.plot2d.loudspeakers(params.array.x[selection], -params.array.n[selection], a0=1, size=0.18)
+        if array_type =='circular':
+            sfs.plot2d.loudspeakers(params.array.x[selection], -params.array.n[selection], a0=1, size=0.18)
+        if array_type == 'linear':
+            sfs.plot2d.loudspeakers(params.array.x[selection], -params.array.n[selection], a0=1, size=0.18)
+
     plt.xlabel('$x [m]$', fontsize=axis_label_size), plt.ylabel('$y [m]$', fontsize=axis_label_size)
     plt.tick_params(axis='both', which='major', labelsize=tick_font_size)
     cbar = plt.colorbar(im, fraction=0.046)

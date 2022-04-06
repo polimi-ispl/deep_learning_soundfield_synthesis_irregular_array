@@ -28,18 +28,13 @@ def main():
     parser.add_argument('--gt_soundfield_dataset_path', type=str, help='path to dataset', default='/nas/home/lcomanducci/soundfield_synthesis/dataset/linear_array/gt_soundfield_train.npy' )
     parser.add_argument('--learning_rate', type=float, help='LEarning rate', default=0.0001)
     parser.add_argument('--green_function', type=str, help='LEarning rate', default='/nas/home/lcomanducci/soundfield_synthesis/dataset/linear_array/green_function_sec_sources_nl_64.npy')
-    parser.add_argument('--gpu', type=str, help='gpu number', default='1')
 
     args = parser.parse_args()
     number_missing_loudspeakers = args.number_missing_ldspk
     epochs = args.epochs
     batch_size = args.batch_size
     log_dir = args.log_dir
-    #log_name = args.log_name
-    #filter_dataset_path = args.filter_dataset_path
     gt_soundfield_dataset_path = args.gt_soundfield_dataset_path
-    #mask_path = args.mask_path
-    #saved_model_path = args.saved_model_path
     lr = args.learning_rate
 
     # Construct paths
@@ -47,7 +42,7 @@ def main():
     mask_path = '/nas/home/lcomanducci/soundfield_synthesis/dataset/linear_array/setup/lspk_config_nl_64_missing_'+str(number_missing_loudspeakers)+'.npy'
     saved_model_path = '/nas/home/lcomanducci/soundfield_synthesis/models/linear_array/model_linear_config_nl_64_missing_'+str(number_missing_loudspeakers)
 
-    lambda_abs = tf.convert_to_tensor(25,dtype=tf.float64)  # we weight the absolute value loss since it is in a different range w.r.t. phase
+    lambda_abs = tf.convert_to_tensor(25, dtype=tf.float64)  # we weight the absolute value loss since it is in a different range w.r.t. phase
 
     log_name = 'linear_array_config_nl_64_missing_'+str(number_missing_loudspeakers)+ '_lr_' + str(
         lr) + 'lamba_abs_' + str(lambda_abs.numpy())

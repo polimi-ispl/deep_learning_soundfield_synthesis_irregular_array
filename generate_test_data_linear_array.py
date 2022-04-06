@@ -21,7 +21,7 @@ def main():
     parser.add_argument('--pwd', type=bool, help='compute model-based acoustic rendering', default=True)
     parser.add_argument('--pwd_cnn', type=bool, help='compute model-based acoustic rendering + CNN', default=True)
     parser.add_argument('--n_missing', type=int, help='number missing loudspeakers',
-                        default=16)
+                        default=48)
     eval_points = False
     PLOT = True
     args = parser.parse_args()
@@ -133,46 +133,46 @@ def main():
             # Ground truth
             plot_paths = os.path.join('plots', 'linear')
             save_path = os.path.join(plot_paths, 'sf_real_source_'
-                                     + str(n_s) + '_f_' + str(params_linear.f_axis[n_f]) + '.pdf')
+                                     + str(n_s) + '_f_' + str(params_linear.f_axis[n_f]) +'.pdf')
             results_utils.plot_soundfield(cmap, P_gt, n_f, selection, axis_label_size, tick_font_size,
                                           save_path, plot_ldspks=False, array_type='linear')
 
             # PWD
             save_path = os.path.join(plot_paths, 'sf_pwd_'
-                                     + str(n_s) + '_f_' + str(params_linear.f_axis[n_f]) + '.pdf')
+                                     + str(n_s) + '_f_' + str(params_linear.f_axis[n_f]) + '_n_l_' +str(args.n_missing) + '.pdf')
             results_utils.plot_soundfield(cmap, P_pwd, n_f, selection, axis_label_size, tick_font_size,
                                           save_path, array_type='linear')
 
             # Error
             nmse_pwd = 10 * np.log10(results_utils.nmse(P_pwd, P_gt, type='full'))
             save_path = os.path.join(plot_paths, 'nmse_pwd_'
-                                     + str(n_s) + '_f_' + str(params_linear.f_axis[n_f]) + '.pdf')
+                                     + str(n_s) + '_f_' + str(params_linear.f_axis[n_f]) + '_n_l_' +str(args.n_missing)+ '.pdf')
             results_utils.plot_soundfield(cmap, nmse_pwd, n_f, selection, axis_label_size, tick_font_size,
                                           save_path, do_norm=False, array_type='linear')
 
             # PWD-CNN
             save_path = os.path.join(plot_paths, 'sf_pwd_cnn_'
-                                     + str(n_s) + '_f_' + str(params_linear.f_axis[n_f]) + '.pdf')
+                                     + str(n_s) + '_f_' + str(params_linear.f_axis[n_f]) + '_n_l_' +str(args.n_missing)+ '.pdf')
             results_utils.plot_soundfield(cmap, P_pwd_cnn, n_f, selection, axis_label_size, tick_font_size,
                                           save_path, array_type='linear')
 
             # Error
             nmse_pwd_cnn = 10 * np.log10(results_utils.nmse(P_pwd_cnn, P_gt, type='full'))
             save_path = os.path.join(plot_paths, 'nmse_pwd_cnn_'
-                                     + str(n_s) + '_f_' + str(params_linear.f_axis[n_f]) + '.pdf')
+                                     + str(n_s) + '_f_' + str(params_linear.f_axis[n_f]) + '_n_l_' +str(args.n_missing)+ '.pdf')
             results_utils.plot_soundfield(cmap, nmse_pwd_cnn, n_f, selection, axis_label_size, tick_font_size,
                                           save_path, do_norm=False, array_type='linear')
 
             # PM
             save_path = os.path.join(plot_paths, 'sf_pm_'
-                                     + str(n_s) + '_f_' + str(params_linear.f_axis[n_f]) + '.pdf')
+                                     + str(n_s) + '_f_' + str(params_linear.f_axis[n_f]) + '_n_l_' +str(args.n_missing)+ '.pdf')
             results_utils.plot_soundfield(cmap, P_pwd_pm, n_f, selection, axis_label_size, tick_font_size,
                                           save_path, array_type='linear')
 
             # Error
             nmse_pm = 10 * np.log10(results_utils.nmse(P_pwd_pm, P_gt, type='full'))
             save_path = os.path.join(plot_paths, 'nmse_pm_'
-                                     + str(n_s) + '_f_' + str(params_linear.f_axis[n_f]) + '.pdf')
+                                     + str(n_s) + '_f_' + str(params_linear.f_axis[n_f]) + '_n_l_' +str(args.n_missing) + '.pdf')
             results_utils.plot_soundfield(cmap, nmse_pm, n_f, selection, axis_label_size, tick_font_size, save_path,
                                           do_norm=False, array_type='linear')
 

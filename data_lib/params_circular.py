@@ -1,7 +1,7 @@
 import numpy as np
 import sfs
 import matplotlib.pyplot as plt
-from data_lib import soundfield_generation as sg
+from data_lib import utils as sg
 import os
 #os.environ['CUDA_VISIBLE_DEVICES']=''
 c_complex = 343
@@ -98,14 +98,14 @@ for n_r in range(len(radius_sources_train)):
         src_pos_train[(n_r * n_sources_radius) + n_s] = sg.pol2cart(radius_sources_train[n_r], angles[n_s])
         src_pos_test[n_r, n_s] = sg.pol2cart(radius_sources_test[n_r], angles[n_s])
 
-plot_setup = False
+plot_setup = True
 if plot_setup:
-    plt.figure(figsize=(10, 10))
+    plt.figure(figsize=(20, 20))
     plt.plot(point_lr[:, 0], point_lr[:, 1], 'g*')
     plt.plot(point_cp[:, 0], point_cp[:, 1], 'b*')
     plt.plot(array_pos[:, 0], array_pos[:, 1], 'k*')
     plt.plot(src_pos_train[:,0], src_pos_train[:,1],'c*')
     plt.plot(src_pos_test[:,:,0], src_pos_test[:,:,1],'r*')
     plt.xlabel('$x [m]$'), plt.ylabel('$y [m]$')
-    plt.legend(['eval points','control points','loudspeakers','train sources','test sources'])
+    plt.legend(['Eval points', 'Control points', 'Loudspeakers', 'Train sources', 'Test sources'])
     plt.show()

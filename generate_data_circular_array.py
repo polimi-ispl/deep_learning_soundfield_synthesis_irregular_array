@@ -9,8 +9,6 @@ from data_lib import soundfield_generation as sg, results_utils
 def main():
     # Arguments parse
     parser = argparse.ArgumentParser(description='Generate data for circular array setup')
-    parser.add_argument('--base_dir', type=str, help="Base Data Directory",
-                        default= '/nas/home/lcomanducci/soundfield_synthesis/dataset')
     parser.add_argument('--gt_soundfield', type=bool, help='compute ground truth soundfield',
                         default=True)
     parser.add_argument('--n_missing', type=int, help='number missing loudspeakers',
@@ -18,6 +16,7 @@ def main():
     parser.add_argument('--dataset_path', type=str, help='number missing loudspeakers',
                         default='/nas/home/lcomanducci/soundfield_synthesis/dataset/circular_array')
     args = parser.parse_args()
+
     eval_points = False
     propagate_filters = True
     dataset_path = args.dataset_path

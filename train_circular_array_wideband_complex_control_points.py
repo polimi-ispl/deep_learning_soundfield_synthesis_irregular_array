@@ -29,7 +29,6 @@ def main():
     parser.add_argument('--gt_soundfield_dataset_path', type=str, help='path to dataset', default='/nas/home/lcomanducci/soundfield_synthesis/dataset/circular_array/gt_soundfield_train.npy' )
     parser.add_argument('--learning_rate', type=float, help='LEarning rate', default=0.0001)
     parser.add_argument('--green_function', type=str, help='LEarning rate', default='/nas/home/lcomanducci/soundfield_synthesis/dataset/circular_array/green_function_sec_sources_nl_64_r_1.npy')
-    parser.add_argument('--gpu', type=str, help='gpu number', default='1')
 
     args = parser.parse_args()
     number_missing_loudspeakers = args.number_missing_ldspk
@@ -69,27 +68,6 @@ def main():
     idx_missing = np.load(mask_path)
     # Load Green function
 
-
-    from data_lib import soundfield_generation as sg
-    """
-    plt.figure()
-    N_lr_pts = len(params_circular.point_lr)
-    x = np.linspace(-1, 1, 20)
-    x, y = np.meshgrid(x, x)
-    x = x.ravel()
-    y = y.ravel()
-    rho,_ = sg.cart2pol(x,y)
-    rho_bool = rho < params_circular.radius
-    x, y = x[rho_bool], y[rho_bool]
-    point_cp = np.array([x, y, np.zeros(x.shape)]).transpose()
-    idx_cp = np.zeros(point_cp.shape[0],dtype=int)
-    for n_p in range(len(point_cp)):
-        idx_cp[n_p] = np.argmin(np.linalg.norm(point_cp[n_p] - params_circular.point_lr, axis=1))
-    plt.plot(params_circular.point_lr[:, 0], params_circular.point_lr[:, 1], 'k*')
-    plt.plot(params_circular.point_lr[idx_cp, 0], params_circular.point_lr[idx_cp, 1], 'r*')
-    plt.show()
-    print(str(len(x.ravel())), 'control points')
-    """
     G = np.load(args.green_function)
     d_ = np.load(filter_dataset_path)  # Filters
     P_gt = np.load(gt_soundfield_dataset_path)  # gt soundfield
