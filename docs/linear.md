@@ -23,7 +23,7 @@ In the image we show the setup used to generate the training and test data.
 
 
 # References
->[1] Comanducci, L. Antonacci, F., &  Sarti. A., Compensation of Driving Signals for Soundfield Synthesis through Irregular Loudspeaker Arrays Based on Convolutional Neural Networks [[arXiv preprint]()].
+>[1] Comanducci, L. Antonacci, F., &  Sarti. A., Synthesis of Soundfields through Irregular Loudspeaker Arrays Based on Convolutional Neural Networks [[arXiv preprint]()].
 
 >[2] Bianchi, L., Antonacci, F., Sarti, A., & Tubaro, S. (2016). Model-based acoustic rendering based on plane wave decomposition. Applied Acoustics, 104, 127-134.
 
