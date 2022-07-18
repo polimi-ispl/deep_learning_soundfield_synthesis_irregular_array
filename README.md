@@ -1,6 +1,6 @@
-# Compensation of Driving Signals for Soundfield Synthesis through Irregular Loudspeaker Arrays Based on Convolutional Neural Network
+# Synthesis of Soundfields through Irregular Loudspeaker Arrays Based on Convolutional Neural Networks
 
-Code repository for the paper _Compensation of Driving Signals for Soundfield Synthesis through Irregular Loudspeaker Arrays Based on Convolutional Neural Networks_
+Code repository for the paper _Synthesis of Soundfields through Irregular Loudspeaker Arrays Based on Convolutional Neural Networks_
 [[1]](#references).
 
 - [Dependencies](#dependencies)
@@ -42,4 +42,4 @@ To compute both Normalized Reproduction Error (NRE) and Structural Similarity In
 N.B. pre-trained models used to compute the results shown in [[1]](#references) can be found in folder _models_
 
 # References
->[1] L.Comanducci, F.Antonacci, A.Sarti, Compensation of Driving Signals for Soundfield Synthesis through Irregular Loudspeaker Arrays Based on Convolutional Neural Networks [[arXiv preprint]()].
+>[1] L.Comanducci, F.Antonacci, A.Sarti, Synthesis of Soundfields through Irregular Loudspeaker Arrays Based on Convolutional Neural Networks [[arXiv preprint]()].
