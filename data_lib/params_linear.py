@@ -56,13 +56,14 @@ for n_p in range(point.shape[0]):
             idx_lr = np.concatenate([idx_lr, np.expand_dims(n_p, axis=0)])
 
 # Extract control points
-sample_cp = 32
+"""
+sample_cp = 395#32
 idx_cp = np.arange(0,  len(point_lr), sample_cp) # relative to listening area
 point_cp = point_lr[idx_cp]
 print(len(idx_cp))
+"""
 
-
-x = np.linspace(-2, 2, N_sample//6)
+x = np.linspace(-2, 2, N_sample//18)  # was 6
 grid_x, grid_y = np.meshgrid(x, x)
 grid_x, grid_y = grid_x.ravel(), grid_y.ravel()
 point_cp_temp = np.array([grid_x, grid_y, np.zeros(shape=grid_x.shape)]).transpose()
@@ -80,7 +81,7 @@ for n_p in range(point_cp_temp.shape[0]):
 for n_p in range(len(point_cp)):
     idx_cp[n_p] = np.argmin(np.linalg.norm(point_cp[n_p] - point_lr, axis=1))
 point_cp = point_lr[idx_cp]
-
+print(len(idx_cp))
 
 # Sources positions training
 x_min, x_max = 1, 9
@@ -95,11 +96,12 @@ x_test = np.linspace(x_min + 0.08, x_max + 0.08, 50)
 y_test = np.linspace(y_min, y_max, 50)
 [X_test, Y_test] = np.meshgrid(x_test, y_test)
 src_pos_test = np.array([X_test.ravel(), Y_test.ravel()])
+src_pos_test = src_pos_test[:,0:-1:10] # TEMPPPP
 n_src_test = src_pos_test.shape[1]
 
 n_src_train = src_pos_train.shape[1]
-
-plot_setup = True
+"""
+plot_setup = False
 if plot_setup:
     plt.figure(figsize=(20, 10))
     #plt.plot(point[:, 0], point[:, 1], 'r*')
@@ -112,3 +114,4 @@ if plot_setup:
     plt.legend(['Eval points', 'Control points', 'Loudspeakers', 'Train sources', 'Test sources'])
     plt.show()
 print(str(len(point_cp)) + ' control points')
+"""

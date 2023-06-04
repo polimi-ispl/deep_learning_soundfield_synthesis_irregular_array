@@ -43,3 +43,4 @@ N.B. pre-trained models used to compute the results shown in [[1]](#references) 
 
 # References
 >[1] L.Comanducci, F.Antonacci, A.Sarti, Compensation of Driving Signals for Soundfield Synthesis through Irregular Loudspeaker Arrays Based on Convolutional Neural Networks [[arXiv preprint]()].
+ì

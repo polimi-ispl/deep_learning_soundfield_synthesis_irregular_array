@@ -16,9 +16,10 @@ def main():
                         default=0)
     parser.add_argument('--dataset_path', type=str, help='number missing loudspeakers',
                         default='/nas/home/lcomanducci/soundfield_synthesis/dataset/linear_array')
+
     args = parser.parse_args()
-    propagate_filters = True
-    eval_points = False
+    propagate_filters = False
+    eval_points = True
     dataset_path = args.dataset_path
 
     # Setup
@@ -66,12 +67,15 @@ def main():
         G = G[params_linear.idx_lr[params_linear.idx_cp]]
         point = params_linear.point_cp
 
+
     P_gt = np.zeros((params_linear.N_sources, N_pts, params_linear.N_freqs), dtype=complex)
     d_array = np.zeros((params_linear.N_sources, N_lspks, params_linear.N_freqs), dtype=complex)
     print('Now we cycle through sources')
     for n_s in tqdm.tqdm(range(params_linear.N_sources)):
-        xs = params_linear.src_pos_train[n_s, :]
+
+        xs = params_linear.src_pos_train.T[n_s, :]
         # Herglotz density function - point source
+        """
         Phi = sg.herglotz_density_point_source(xs, theta_n, trunc_mod_exp_idx, N, A=1)
 
         # Multiply filters for herglotz density function
@@ -83,7 +87,7 @@ def main():
         if propagate_filters:
             for n_p in range(N_pts):
                 P[n_p, :] = np.sum(G[n_p] * d_array[n_s], axis=0)
-
+        """
         if args.gt_soundfield:
             for n_f in range(params_linear.N_freqs):
                 P_gt[n_s, :, n_f] = (1j / 4) * \
@@ -93,9 +97,10 @@ def main():
 
     if args.gt_soundfield:
         np.save(os.path.join(dataset_path, 'gt_soundfield_train.npy'), P_gt)
+    """
     np.save(os.path.join(dataset_path,
                          'filters_config_nl_' + str(params_linear.N_lspks) + '_missing_' + str(N_missing) + '.npy'), d_array)
-
+    """
 
 if __name__ == '__main__':
     main()

@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import sfs
-from data_lib import params_linear, params_circular
+from data_lib import params_linear, params_circular, params_real
 from skimage.metrics import structural_similarity as ssim
 
 # Do plots using latex
@@ -33,6 +33,8 @@ def plot_soundfield(cmap, P, n_f, selection, axis_label_size, tick_font_size, sa
         params = params_linear
     elif array_type == 'circular':
         params = params_circular
+    elif array_type == 'real':
+        params = params_real
     else:
         print('Error')
 
@@ -48,6 +50,8 @@ def plot_soundfield(cmap, P, n_f, selection, axis_label_size, tick_font_size, sa
             sfs.plot2d.loudspeakers(params.array.x[selection], -params.array.n[selection], a0=1, size=0.18)
         if array_type == 'linear':
             sfs.plot2d.loudspeakers(params.array.x[selection], -params.array.n[selection], a0=1, size=0.18)
+        #if array_type == 'real':
+        #    sfs.plot2d.loudspeakers(params.array_wfs.x[selection], -params.array_wfs.n[selection], a0=1, size=0.18)
 
     plt.xlabel('$x [m]$', fontsize=axis_label_size), plt.ylabel('$y [m]$', fontsize=axis_label_size)
     plt.tick_params(axis='both', which='major', labelsize=tick_font_size)
@@ -56,6 +60,9 @@ def plot_soundfield(cmap, P, n_f, selection, axis_label_size, tick_font_size, sa
     # cbar.set_label('$NRE~[\mathrm{dB}]$',fontsize=tick_font_size))
     plt.tight_layout()
     plt.savefig(save_path)
+
+    # if we plot ttitle is for debug
+
     plt.show()
 
 def normalize(x):

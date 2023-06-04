@@ -60,7 +60,7 @@ point_grid = point[np.arange(0,point.shape[0],21),:] # was 41
 
 
 N_lr_pts = len(point_lr)
-x = np.linspace(-1, 1, 20)
+x = np.linspace(-1, 1, 10) # USED TO BE 20   ## 8 --> 32   ## 6 --> 16 control points
 x, y = np.meshgrid(x, x)
 x = x.ravel()
 y = y.ravel()
@@ -71,8 +71,7 @@ point_cp = np.array([x, y, np.zeros(x.shape)]).transpose()
 idx_cp = np.zeros(point_cp.shape[0], dtype=int)
 for n_p in range(len(point_cp)):
     idx_cp[n_p] = np.argmin(np.linalg.norm(point_cp[n_p] - point_lr, axis=1))
-
-#print(str(len(x.ravel())), 'control points')
+print(str(len(point_cp)) + ' control points')
 
 plot_setup = False
 if plot_setup:
@@ -98,7 +97,11 @@ for n_r in range(len(radius_sources_train)):
         src_pos_train[(n_r * n_sources_radius) + n_s] = sg.pol2cart(radius_sources_train[n_r], angles[n_s])
         src_pos_test[n_r, n_s] = sg.pol2cart(radius_sources_test[n_r], angles[n_s])
 
-plot_setup = True
+# Let's use less test sources otherwise it will take toooo long
+#src_pos_test = src_pos_test[:,0:-1:10,:]
+n_sources_radius_test = src_pos_test.shape[1]
+
+plot_setup = False
 if plot_setup:
     plt.figure(figsize=(20, 20))
     plt.plot(point_lr[:, 0], point_lr[:, 1], 'g*')
@@ -109,3 +112,4 @@ if plot_setup:
     plt.xlabel('$x [m]$'), plt.ylabel('$y [m]$')
     plt.legend(['Eval points', 'Control points', 'Loudspeakers', 'Train sources', 'Test sources'])
     plt.show()
+

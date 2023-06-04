@@ -173,3 +173,4 @@ def est_vs_gt_filt_soundfield_fig_train_2(h_hat, h, h_min_val, h_max_val, SRG_in
     plt.xlabel('x [m]'), plt.ylabel('y [m]')
     plt.tight_layout()
     return figure
+

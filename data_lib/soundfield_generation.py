@@ -2,7 +2,7 @@ import numpy as np
 import tqdm
 import scipy
 from data_lib import params_linear, params_circular
-import jax.numpy as jnp
+#import jax.numpy as jnp
 
 def cart2pol(x, y):
     rho = np.sqrt(x**2 + y**2)
@@ -29,7 +29,7 @@ def model_based_synthesis_linear_array(N_lspks, G):
         N, h, theta_n, theta_min, theta_max, trunc_mod_exp_idx
     """
     # Plane wave directions --> frequency dependent
-    radius_lr = 1  # Radius of  listening area
+    radius_lr = 0.5  # Radius of  listening area
 
     # Truncation order
     M = np.ceil((params_linear.wc / params_linear.c) * np.exp(1) * (radius_lr / 2)).astype(int)
@@ -50,7 +50,7 @@ def model_based_synthesis_linear_array(N_lspks, G):
         k_n = np.array([np.cos(theta_n[n_f]), np.sin(theta_n[n_f])]).transpose()
         h_temp = np.zeros((N_lspks, N[n_f]), dtype=complex)
         C_m_pwd = np.matmul(
-            jnp.linalg.pinv(np.matmul(G_cp[:, :, n_f].transpose(), G_cp[:, :, n_f]) + lambda_ * np.eye(N_lspks)),
+            np.linalg.pinv(np.matmul(G_cp[:, :, n_f].transpose(), G_cp[:, :, n_f]) + lambda_ * np.eye(N_lspks)),
             G_cp[:, :, n_f].transpose())
         for n in range(N[n_f]):
             d = np.exp(1j * (params_linear.wc[n_f] / params_linear.c) * np.matmul(points_cp[:, :2], k_n[n]))
@@ -58,13 +58,12 @@ def model_based_synthesis_linear_array(N_lspks, G):
         h.append(h_temp)
     return N, h, theta_n, theta_min, theta_max, trunc_mod_exp_idx
 
-def model_based_synthesis_circular_array(N_lspks, theta_l):
+def model_based_synthesis_circular_array(N_lspks, theta_l,radius_array,radius_lr=1):
     """
     Computes driving signals using circular loudspeaker array according to
         Bianchi, L., Antonacci, F., Sarti, A., & Tubaro, S. (2016).
         Model-based acoustic rendering based on plane wave decomposition.
         Applied Acoustics, 104, 127-134.
-
     Args:
         N_lspks: Int, number of loudspeakers
         theta_l: secondary sources coordinates in polar form
@@ -72,7 +71,7 @@ def model_based_synthesis_circular_array(N_lspks, theta_l):
         N, h, theta_n, theta_min, theta_max, trunc_mod_exp_idx
     """
     # Plane wave directions --> frequency dependent
-    radius_lr = 1
+
 
     # Truncation order
     M = np.ceil((params_circular.wc / params_circular.c) * np.exp(1) * (radius_lr / 2)).astype(int)
@@ -82,16 +81,18 @@ def model_based_synthesis_circular_array(N_lspks, theta_l):
 
     # Rendering filters (fixed for setup of choice)
     h = []
-    for n_f in tqdm.tqdm(range(len(params_circular.wc))):
+    for n_f in range(len(params_circular.wc)):
         h_temp = np.zeros((N_lspks, N[n_f]), dtype=complex)
         for n_l in range(N_lspks):
             for n in range(N[n_f]):
                 num = np.exp(1j * trunc_mod_exp_idx[n_f] * (theta_l[n_l] - theta_n[n_f][n] + (np.pi / 2)))
                 den = scipy.special.hankel2(trunc_mod_exp_idx[n_f],
-                                            (params_circular.wc[n_f] / params_circular.c) * params_circular.radius)
+                                            (params_circular.wc[n_f]* radius_array) / (params_circular.c) )
                 h_temp[n_l, n] = 4 / (1j * N_lspks) * np.sum(num / den)
         h.append(h_temp)
-        return N, h, theta_n, trunc_mod_exp_idx
+
+    return N, h, theta_n, trunc_mod_exp_idx
+
 
 
 def herglotz_density_point_source(xs, theta_n, trunc_mod_exp_idx, N, A=1):
