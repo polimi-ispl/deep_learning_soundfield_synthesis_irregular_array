@@ -16,7 +16,7 @@ Code repository for the paper _Compensation of Driving Signals for Soundfield Sy
 - [sfs](https://sfs-python.readthedocs.io/en/0.6.2/)
 
 ### Data generation
-There are two different scripts to generate the data for the circular and linear array case, namely _generate_data_circular_array.py_ and _generate_data_linear_array.py_. The parameters used for data generation (e.g. sources position, array position) are defined into _data_lib/params_circular_ and _data_lib/params_linear_, respectively.
+There are three different scripts to generate the data for the circular, linear array and real measurements scenarios, namely _generate_data_circular_array.py_, _generate_data_linear_array.py_ and _generate_data_real_array.py_. The parameters used for data generation (e.g. sources position, array position) are defined into _data_lib/params_circular_, _data_lib/params_linear_ and _data_lib/params_real_, respectively.
 
 The command-line arguments are the following
 - gt_soundfield: bool, True if want to generate also data related to ground truth soundfield

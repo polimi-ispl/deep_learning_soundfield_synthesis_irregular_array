@@ -10,15 +10,15 @@ def main():
     # Arguments parse
     parser = argparse.ArgumentParser(description='Generate data for circular array setup')
     parser.add_argument('--gt_soundfield', type=bool, help='compute ground truth soundfield',
-                        default=True)
+                        default=False)
     parser.add_argument('--n_missing', type=int, help='number missing loudspeakers',
-                        default=0)
+                        default=32)
     parser.add_argument('--dataset_path', type=str, help='number missing loudspeakers',
                         default='/nas/home/lcomanducci/soundfield_synthesis/dataset/circular_array')
     args = parser.parse_args()
 
-    eval_points = False
-    propagate_filters = True
+    eval_points = True
+    propagate_filters = False
     dataset_path = args.dataset_path
 
     # Setup
@@ -54,6 +54,7 @@ def main():
     else:
         idx_missing = np.random.choice(np.arange(params_circular.N_lspks), size=N_missing, replace=False)
         np.save(lspk_config_path_global, idx_missing)
+        print('CONFIG NEW')
     N_lspks = params_circular.N_lspks - N_missing
     theta_l = np.delete(params_circular.theta_l, idx_missing)
     G = np.delete(G, idx_missing, axis=1)
