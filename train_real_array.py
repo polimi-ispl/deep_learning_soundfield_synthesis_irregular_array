@@ -6,22 +6,17 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from tqdm import tqdm
 
-
 def main():
 
-    parser = argparse.ArgumentParser(
-        description='Sounfield reconstruction')
-
+    parser = argparse.ArgumentParser(description='Sounfield reconstruction')
     parser.add_argument('--epochs', type=int, help='Number of epochs', default=5000)
     parser.add_argument('--batch_size', type=int, help='batch size', default=32)
     parser.add_argument('--log_dir', type=str, help='Tensorboard log directory', default='/nas/home/lcomanducci/soundfield_synthesis/logs/scalars')
-    parser.add_argument('--n_missing', type=int, help='number of missing loudspeakers',default=32)
-    parser.add_argument('--gt_soundfield_dataset_path', type=str, help='path to dataset', default='/nas/home/lcomanducci/soundfield_synthesis/dataset/circular_array/gt_soundfield_train.npy' )
+    parser.add_argument('--n_missing', type=int, help='number of missing loudspeakers',default=28)
+    parser.add_argument('--gt_soundfield_dataset_path', type=str, help='path to dataset', default='/nas/home/lcomanducci/soundfield_synthesis/dataset/real_array/gt_soundfield_train.npy' )
     parser.add_argument('--learning_rate', type=float, help='LEarning rate', default=0.0001)
-    parser.add_argument('--green_function', type=str, help='LEarning rate', default='/nas/home/lcomanducci/soundfield_synthesis/dataset/circular_array/green_function_sec_sources_nl_64_r_1.npy')
+    parser.add_argument('--green_function', type=str, help='LEarning rate', default='/nas/home/lcomanducci/soundfield_synthesis/dataset/real_array/green_function_sec_sources_nl_60_real.npy')
     parser.add_argument('--gpu', type=str, help='GPU number', default='0')
-    parser.add_argument('--patience', type=int, help='patience early stopping', default=10)
-
     args = parser.parse_args()
     number_missing_loudspeakers = args.n_missing
     epochs = args.epochs
@@ -39,18 +34,16 @@ def main():
     import sfs
     from train_lib import network_utils
     from train_lib import train_utils
-    from data_lib import params_circular
+    from data_lib import params_real
     AUTOTUNE = tf.data.experimental.AUTOTUNE
 
-    early_stop_patience = args.patience
+    early_stop_patience = 10
     # Construct paths
-    filter_dataset_path = '/nas/home/lcomanducci/soundfield_synthesis/dataset/circular_array/filters_config_nl_64_missing_' +str(number_missing_loudspeakers)+'.npy'
-    mask_path = '/nas/home/lcomanducci/soundfield_synthesis/dataset/circular_array/setup/lspk_config_nl_64_missing_' +str(number_missing_loudspeakers)+'.npy'
-    # saved_model_path = '/nas/home/lcomanducci/soundfield_synthesis/models/circular_array/model_circular_config_nl_64_missing_' +str(number_missing_loudspeakers)+'_COMPLEX_CP_'+str(len(params_circular.point_cp))
-    saved_model_path = \
-        '/nas/home/lcomanducci/soundfield_synthesis/models/circular_array/model_circular_config_nl_64_missing_'\
-        +str(number_missing_loudspeakers)+'_COMPLEX_CP_'+str(len(params_circular.point_cp))+'_lr_'+str(lr)+'PReLU_earlyStop_'+str(early_stop_patience)
-    log_name = 'circular_array_config_nl_64_missing_'+str(number_missing_loudspeakers)+ '_lr_' + str(lr)+'PReLU_earlyStop_'+str(early_stop_patience)
+    filter_dataset_path = '/nas/home/lcomanducci/soundfield_synthesis/dataset/real_array/filters_config_nl_60_missing_' +str(number_missing_loudspeakers)+'.npy'
+    mask_path = '/nas/home/lcomanducci/soundfield_synthesis/dataset/real_array/setup/lspk_config_nl_60_missing_' +str(number_missing_loudspeakers)+'.npy'
+    saved_model_path = '/nas/home/lcomanducci/soundfield_synthesis/models/real_array/model_real_config_nl_60_missing_'\
+        +str(number_missing_loudspeakers)+'_COMPLEX_CP_'+str(len(params_real.idx_cp))+'_lr_'+str(lr)+'PReLU_earlyStop_10_BIG'
+    log_name = 'real_array_config_nl_60_missing_'+str(number_missing_loudspeakers)+ '_lr_' + str(lr)+'PReLU_earlyStop_'+str(early_stop_patience)+'_CP_'+str(len(params_real.idx_cp))
 
     # Tensorboard and logging
     log_dir = os.path.join(log_dir, datetime.datetime.now().strftime("%Y%m%d-%H%M%S") + log_name)
@@ -63,15 +56,10 @@ def main():
         staircase=True)
     # Training params
 
-    optimizer = tf.keras.optimizers.Adam(learning_rate=lr_schedule)#,clipnorm=100)
+    optimizer = tf.keras.optimizers.Adam(learning_rate=lr_schedule)
 
     epoch_to_plot = 25  # Plot evey epoch_to_plot epochs
     val_perc = 0.2
-
-    N_mics = 64
-    filter_shape = int(N_mics * 2)
-    nfft = int(129)
-
 
     # Load configuration
     idx_missing = np.load(mask_path)
@@ -82,8 +70,8 @@ def main():
     P_gt = np.load(gt_soundfield_dataset_path).astype(np.complex64)  # gt soundfield
 
     # Slice
-    P_gt = P_gt[:, params_circular.idx_cp]
-    G_cp = G[params_circular.idx_lr[params_circular.idx_cp]]
+    P_gt = P_gt[:, params_real.idx_cp]
+    G_cp = G[params_real.idx_cp]
     G = np.delete(G, idx_missing, axis=1)
     G_cp = np.delete(G_cp, idx_missing, axis=1)
     G = tf.convert_to_tensor(G)
@@ -91,7 +79,7 @@ def main():
     # Load dataset
 
     # Split train/val
-    d_train, d_val, P_train, P_val, src_train, src_val = train_test_split(d_, P_gt, params_circular.src_pos_train, test_size=val_perc)
+    d_train, d_val, P_train, P_val, src_train, src_val = train_test_split(d_, P_gt, params_real.src_pos_train, test_size=val_perc)#, random_state=42)
 
     do_overfit = False
     if do_overfit:
@@ -102,7 +90,6 @@ def main():
         P_val = P_train
         src_val = src_train
 
-
     def preprocess_dataset(d, P, src):
         data_ds = tf.data.Dataset.from_tensor_slices((d,P, src))
         return data_ds
@@ -110,22 +97,11 @@ def main():
     train_ds = preprocess_dataset(d_train, P_train, src_train)
     val_ds = preprocess_dataset(d_val, P_val, src_val)
 
-    class ComplexMAE(tf.keras.losses.Loss):
-        def call(self, y_true, y_pred):
-            y_pred = tf.convert_to_tensor(y_pred)
-            y_true = tf.convert_to_tensor(y_true)
-            if y_pred.dtype.is_complex and not y_true.dtype.is_complex:  # Complex pred but real true
-                y_true = tf.complex(y_true, y_true)
-            y_true = tf.cast(y_true, y_pred.dtype)
-            return tf.cast(tf.keras.backend.mean(tf.math.abs(y_true - y_pred), axis=-1),
-                           dtype=y_pred.dtype.real_dtype)
-
-    loss_fn = ComplexMAE()
     loss_fn = tf.keras.losses.MeanAbsoluteError()
 
 
     filter_shape = int(d_train.shape[1])
-    N_freqs = params_circular.N_freqs
+    N_freqs = params_real.N_freqs
 
     # Load Network
     network_model_filters = network_utils.filter_compensation_model_wideband_skipped_circular(filter_shape, N_freqs)
@@ -145,15 +121,16 @@ def main():
     val_ds = val_ds.prefetch(AUTOTUNE)
 
     @tf.function
-    def train_step(d_, P_,n_e):
+    def train_step(d_, P_):
         with tf.GradientTape() as tape:
             # Compensate driving signals
             d_hat = network_model_filters(d_, training=True)[:, :, :, 0]
-
             p_est = tf.einsum('bij, kij-> bkj', d_hat, G_cp)
+            P_ = tf.reshape(P_, (-1, len(params_real.idx_cp) * params_real.N_freqs))
+            p_est = tf.reshape(p_est, (-1, len(params_real.idx_cp) * params_real.N_freqs))
             loss_value_P = loss_fn(P_,p_est)
-        network_model_filters_grads = tape.gradient(loss_value_P, network_model_filters.trainable_weights)
 
+        network_model_filters_grads = tape.gradient(loss_value_P, network_model_filters.trainable_weights)
         optimizer.apply_gradients(zip(network_model_filters_grads, network_model_filters.trainable_weights))
 
         return loss_value_P
@@ -162,8 +139,9 @@ def main():
     def val_step(d_, P_):
             # Compensate driving signals
             d_hat = network_model_filters(d_, training=False)[:, :, :, 0]
-
             p_est = tf.einsum('bij, kij-> bkj', d_hat, G_cp)
+            P_ = tf.reshape(P_, (-1, len(params_real.idx_cp) * params_real.N_freqs))
+            p_est = tf.reshape(p_est, (-1, len(params_real.idx_cp) * params_real.N_freqs))
             loss_value_P = loss_fn(P_,p_est)
 
             return loss_value_P, d_hat
@@ -174,12 +152,10 @@ def main():
         n_step = 0
         train_loss = 0
         for d, P, _ in train_ds:
-            train_loss = train_loss + train_step(d, P,n_e)
+            train_loss = train_loss + train_step(d, P)
             n_step = n_step + 1
         train_loss = train_loss/n_step
-        # Log to tensorboard
-        with summary_writer.as_default():
-            tf.summary.scalar('train_loss_P', train_loss, step=n_e)
+
 
         n_step = 0
         val_loss = 0
@@ -189,6 +165,11 @@ def main():
             n_step = n_step + 1
         val_loss =val_loss/n_step
 
+        # Log to tensorboard
+        with summary_writer.as_default():
+            tf.summary.scalar('train_loss_P', train_loss, step=n_e)
+            tf.summary.scalar('val_loss_P', val_loss, step=n_e)
+
         # Every epoch_to_plot epochs plot an example of validation
         if not n_e % epoch_to_plot and plot_val:
             print('Train loss: ' + str(train_loss.numpy()))
@@ -196,7 +177,7 @@ def main():
 
             n_s = np.random.randint(0, src.shape[0])
             idx_f = np.random.randint(0, N_freqs)
-            idx_f = 41 # FIXEDD to 1000 Hzzz
+            idx_f = 41
 
             P_hat_real =  tf.math.real(tf.einsum('bij, kij-> bkj', d_hat, G))[n_s]
             P_pwd_real =  tf.math.real(tf.einsum('bij, kij-> bkj', d, G))[n_s]
@@ -206,18 +187,16 @@ def main():
             for n_f in range(N_freqs):
                 P_gt[ :, n_f] = (1j / 4) * \
                                scipy.special.hankel2(0,
-                                                     (params_circular.wc[n_f] / params_circular.c) *
-                                                     np.linalg.norm(params_circular.point[:, :2] - src[n_s], axis=1))
+                                                     (params_real.wc[n_f] / params_real.c) *
+                                                     np.linalg.norm(params_real.points[:, :2] - src[n_s], axis=1))
 
-            p_pwd_real = np.reshape(P_pwd_real[:, idx_f], (params_circular.N_sample, params_circular.N_sample))
-            p_hat_real = np.reshape(P_hat_real[:, idx_f], (params_circular.N_sample, params_circular.N_sample))
-            p_gt = np.reshape(np.real(P_gt[ :, idx_f]), (params_circular.N_sample, params_circular.N_sample))
-            selection = np.ones_like(params_circular.array_pos[:, 0])
-            selection[idx_missing] = 0
+            p_pwd_real = np.reshape(P_pwd_real[:, idx_f], (params_real.N_sample, params_real.N_sample))
+            p_hat_real = np.reshape(P_hat_real[:, idx_f], (params_real.N_sample, params_real.N_sample))
+            p_gt = np.reshape(np.real(P_gt[ :, idx_f]), (params_real.N_sample, params_real.N_sample))
             figure_soundfield = plt.figure(figsize=(10, 20))
             plt.subplot(311)
             plt.imshow(p_pwd_real,aspect='auto',cmap='magma'),plt.colorbar()
-            plt.title('pwd + F:' + str(params_circular.f_axis[idx_f]) + ' Hz')
+            plt.title('pwd + F:' + str(params_real.f_axis[idx_f]) + ' Hz')
             plt.subplot(312)
             plt.imshow(p_gt, aspect='auto', cmap='magma'),plt.colorbar()
             plt.title('GT')
@@ -242,23 +221,18 @@ def main():
         else:
             if val_loss < lowest_val_loss:
                 network_model_filters.save(saved_model_path)
-                print('Model Updated')
+                print('Model updated')
                 lowest_val_loss = val_loss
                 early_stop_counter = 0
             else:
                 early_stop_counter = early_stop_counter + 1
-                print('Patience status: ' + str(early_stop_counter) + '/' + str(early_stop_patience))
+                print('Patience status: '+str(early_stop_counter)+'/'+str(early_stop_patience))
+
 
         # Early stopping
         if early_stop_counter > early_stop_patience:
             print('Training finished at epoch '+str(n_e))
             break
-
-        # Log to tensorboard
-        with summary_writer.as_default():
-            tf.summary.scalar('val_loss_P', val_loss, step=n_e)
-
-
 if __name__ == '__main__':
     main()
 
