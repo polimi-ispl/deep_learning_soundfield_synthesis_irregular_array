@@ -53,4 +53,4 @@ To plot both Normalized Reproduction Error (NRE) and Structural Similarity Index
 N.B. pre-trained models used to compute the results shown in [[1]](#references) can be found in folder _models_
 
 # References
->[1] L.Comanducci, F.Antonacci, A.Sarti, Synthesis of Soundfields through Irregular Loudspeaker Arrays Based on Convolutional Neural Networks [[arXiv preprint]()].
+>[1] L.Comanducci, F.Antonacci, A.Sarti, Synthesis of Soundfields through Irregular Loudspeaker Arrays Based on Convolutional Neural Networks [[arXiv preprint](https://arxiv.org/pdf/2205.12872.pdf)].
