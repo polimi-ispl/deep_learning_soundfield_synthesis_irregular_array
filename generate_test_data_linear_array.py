@@ -21,7 +21,7 @@ def main():
     parser.add_argument('--pm', type=bool, help='compute pressure matching', default=False)
     parser.add_argument('--pwd', type=bool, help='compute model-based acoustic rendering', default=False)
     parser.add_argument('--pwd_cnn', type=bool, help='compute model-based acoustic rendering + CNN', default=False)
-    parser.add_argument('--n_missing', type=int, help='number missing loudspeakers', default=32)
+    parser.add_argument('--n_missing', type=int, help='number missing loudspeakers', default=48)
     parser.add_argument('--wfs', type=bool, help='compute Wave Field Synthesis', default=False)
     parser.add_argument('--awfs', type=bool, help='compute Adaptive Wave Field Synthesis', default=False)
     parser.add_argument('--pwd_apwd', type=bool,

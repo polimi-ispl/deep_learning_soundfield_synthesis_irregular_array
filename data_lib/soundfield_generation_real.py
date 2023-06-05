@@ -54,7 +54,7 @@ def herglotz_density_point_source(xs, theta_n, trunc_mod_exp_idx, N, A=1):
     r_z, theta_z = cart2pol(xs[0], xs[1])
     Phi = []
     for n_f in range(params_real.N_freqs):
-        C_m = np.power(1j, -trunc_mod_exp_idx[n_f]) * A * (1j / 4) * scipy.special.hankel2(
+        C_m = np.power(1j, -trunc_mod_exp_idx[n_f]) *  (1j / 4) * scipy.special.hankel2(
             trunc_mod_exp_idx[n_f], (params_real.wc[n_f] / params_real.c) * r_z) * np.exp(
             -1j * theta_z * trunc_mod_exp_idx[n_f])
         Phi_temp = np.zeros((N[n_f]), dtype=complex)
