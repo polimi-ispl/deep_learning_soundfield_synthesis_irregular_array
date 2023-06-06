@@ -2,7 +2,7 @@
 # Irregular Circular Array Results
 [Home](/deep_learning_soundfield_synthesis_irregular_array/index.html) 
 
-In this page we show results corresponding to reproduction of a single source when using the deep learning-based model presented in  [[1]](#references), denoted as CNN, the Model-based rendering technique presented in [[2]](#references) denoted as MR, the pressure-matching approach [[3]](#references) denoted as PM and the adaptive wavefield synthesis technique[[4]](#references), denoted as AWFS. We consider a regular loudspeaker array of 64 elements and randomly remove 16,32, and 48 loudspeakers, ending with a 48,32,16 element array, respectively
+In this page we show results corresponding to reproduction of a single source when using the deep learning-based model presented in  [[1]](#references), denoted as CNN, the Model-based rendering technique presented in [[2]](#references) denoted as MR, the pressure-matching approach [[3]](#references) denoted as PM and the adaptive wavefield synthesis technique[[4]](#references), denoted as AWFS. We also present results related to an adaptive version of MR denoted AMR. We consider a regular loudspeaker array of 64 elements and randomly remove 16,32, and 48 loudspeakers, ending with a 48,32,16 element array, respectively
 
 
 # Training/test setup
