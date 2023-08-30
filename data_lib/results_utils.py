@@ -86,7 +86,6 @@ def nmse(P_hat, P_gt, type='freq'):
     """
     if type =='freq':
         return np.sum(np.power(np.abs(P_hat[:, :] - P_gt[:, :]),2),axis=0) / np.sum(np.power(np.abs(P_gt[:, :]), 2),axis=0)
-        #return np.mean((np.power(np.abs(P_hat[:, :] - P_gt[:, :]), 2) / np.power(np.abs(P_gt[:, :]), 2)), axis=0)
 
     else:
         return np.power(np.abs(P_hat[:, :] - P_gt[:, :]), 2) / np.power(np.abs(P_gt[:, :]), 2)
