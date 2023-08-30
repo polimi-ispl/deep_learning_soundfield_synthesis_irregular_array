@@ -11,7 +11,7 @@ plt.rcParams.update({
     "font.sans-serif": ["Helvetica"],
     'font.size': 20})
 
-def plot_soundfield(cmap, P, n_f, selection, axis_label_size, tick_font_size, save_path, array_type, plot_ldspks=True, do_norm=True):
+def plot_soundfield(cmap, P, n_f, selection, axis_label_size, tick_font_size, save_path, array_type, plot_ldspks=True, do_norm=True,do_save=True):
     """
     Args:
         cmap: string, colormap
@@ -47,11 +47,9 @@ def plot_soundfield(cmap, P, n_f, selection, axis_label_size, tick_font_size, sa
                                   params.grid,  cmap=cmap, colorbar=False, vmin=P[:, n_f].min(), vmax=P[:, n_f].max(), xnorm=None)
     if plot_ldspks:
         if array_type =='circular':
-            sfs.plot2d.loudspeakers(params.array.x[selection], -params.array.n[selection], a0=1, size=0.18)
+            sfs.plot2d.loudspeakers(params.array.x[selection], params.array.n[selection], a0=1, size=0.18)
         if array_type == 'linear':
-            sfs.plot2d.loudspeakers(params.array.x[selection], -params.array.n[selection], a0=1, size=0.18)
-        #if array_type == 'real':
-        #    sfs.plot2d.loudspeakers(params.array_wfs.x[selection], -params.array_wfs.n[selection], a0=1, size=0.18)
+            sfs.plot2d.loudspeakers(params.array.x[selection], params.array.n[selection], a0=1, size=0.18)
 
     plt.xlabel('$x [m]$', fontsize=axis_label_size), plt.ylabel('$y [m]$', fontsize=axis_label_size)
     plt.tick_params(axis='both', which='major', labelsize=tick_font_size)
@@ -59,10 +57,8 @@ def plot_soundfield(cmap, P, n_f, selection, axis_label_size, tick_font_size, sa
     cbar.ax.tick_params(labelsize=tick_font_size)
     # cbar.set_label('$NRE~[\mathrm{dB}]$',fontsize=tick_font_size))
     plt.tight_layout()
-    plt.savefig(save_path)
-
-    # if we plot ttitle is for debug
-
+    if do_save:
+        plt.savefig(save_path)
     plt.show()
 
 def normalize(x):
@@ -89,9 +85,29 @@ def nmse(P_hat, P_gt, type='freq'):
         NMSE: Normalized Mean Squared Error (or Normalized Reproduction Error)
     """
     if type =='freq':
-        return np.mean((np.power(np.abs(P_hat[:, :] - P_gt[:, :]), 2) / np.power(np.abs(P_gt[:, :]), 2)), axis=0)
+        return np.sum(np.power(np.abs(P_hat[:, :] - P_gt[:, :]),2),axis=0) / np.sum(np.power(np.abs(P_gt[:, :]), 2),axis=0)
+        #return np.mean((np.power(np.abs(P_hat[:, :] - P_gt[:, :]), 2) / np.power(np.abs(P_gt[:, :]), 2)), axis=0)
+
     else:
         return np.power(np.abs(P_hat[:, :] - P_gt[:, :]), 2) / np.power(np.abs(P_gt[:, :]), 2)
+
+
+def mse(P_hat, P_gt, type='freq'):
+    """
+    Computes NMSE between ground truth and estimated soundfield
+    Args:
+        P_hat: np.array, complex estimated soundfield [N_points, N_freqs]
+        P_gt:  np.array, complex ground truth soundfield [N_points, N_freqs]
+        type: 'freq' --> averages over all listening points (nmse per each frequencies), otherwise does not average
+    Returns
+        NMSE: Normalized Mean Squared Error (or Normalized Reproduction Error)
+    """
+    if type =='freq':
+        return np.mean(np.power(np.abs(P_hat[:, :] - P_gt[:, :]), 2), axis=0)
+    else:
+        return np.power(np.abs(P_hat[:, :] - P_gt[:, :]), 2)
+
+
 
 def ssim_abs(P_hat, P_gt):
     """
@@ -109,7 +125,8 @@ def ssim_abs(P_hat, P_gt):
     """
     P_hat = normalize(np.abs(P_hat))
     P_gt = normalize(np.abs(P_gt))
-    return ssim(P_gt, P_hat, data_range=1)
+    data_range = 1
+    return ssim(P_gt, P_hat, data_range=data_range)
 
 def ssim_freq(P_hat, P_gt):
     """
